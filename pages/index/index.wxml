@@ -1,0 +1,73 @@
+<view class="container">
+  <view class="title">你必须得吃这个！</view>
+
+  <view class="tabs">
+    <view
+      class="tab {{activeTab === 'custom' ? 'tab--active' : ''}}"
+      data-tab="custom"
+      bindtap="onTabTap"
+    >我的菜单</view>
+    <view
+      class="tab {{activeTab === 'nearby' ? 'tab--active' : ''}}"
+      data-tab="nearby"
+      bindtap="onTabTap"
+    >附近随便找</view>
+  </view>
+
+  <view wx:if="{{activeTab === 'custom'}}" class="tab-content">
+    <view class="input-row">
+      <input
+        class="food-input"
+        placeholder="输入食物名称..."
+        value="{{inputValue}}"
+        bindinput="onInput"
+        confirm-type="done"
+        bindconfirm="onAddFood"
+      />
+      <button class="add-btn" bindtap="onAddFood">+</button>
+    </view>
+    <view class="tags">
+      <view
+        class="tag"
+        wx:for="{{foods}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onDeleteFood"
+      >{{item.name}}</view>
+      <view wx:if="{{foods.length === 0}}" class="empty-hint">先加点吃的吧</view>
+    </view>
+  </view>
+
+  <view wx:if="{{activeTab === 'nearby'}}" class="tab-content">
+    <view wx:if="{{!mapKeyConfigured}}" class="placeholder-box">
+      <text>地图功能暂未配置</text>
+      <text class="placeholder-sub">请在 app.ts 中填入腾讯地图 API Key</text>
+    </view>
+    <block wx:else>
+      <view class="radius-row">
+        <text class="radius-label">搜索半径</text>
+        <text class="radius-value">{{radius}}m</text>
+      </view>
+      <slider
+        class="radius-slider"
+        min="500"
+        max="3000"
+        step="100"
+        value="{{radius}}"
+        show-value
+        bindchange="onRadiusChange"
+      />
+      <view class="nearby-info">
+        <text wx:if="{{nearbyLoading}}">搜索中...</text>
+        <text wx:elif="{{nearbyCount > 0}}">找到 {{nearbyCount}} 家餐厅</text>
+        <text wx:else>这附近啥也没有，换个半径试试</text>
+      </view>
+    </block>
+  </view>
+
+  <view class="bottom-bar">
+    <button class="btn-primary" disabled="{{btnDisabled}}" bindtap="onDraw">
+      决定命运的时刻
+    </button>
+  </view>
+</view>

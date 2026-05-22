@@ -1,0 +1,24 @@
+<view wx:if="{{state !== 'terminal'}}" class="result-page">
+  <view class="result-label">命运选择了</view>
+  <view class="result-food scale-in">{{food}}</view>
+
+  <view wx:if="{{state === 'normal'}}" class="result-actions">
+    <button class="btn-primary" bindtap="onAccept">去吃！</button>
+    <button class="btn-ghost" bindtap="onRetry">再抽一次</button>
+  </view>
+
+  <view
+    wx:if="{{state === 'chaos'}}"
+    class="chaos-btn"
+    style="transform: translate({{jumpX}}px, {{jumpY}}px) rotate({{jumpRotate}}deg); transition: transform 0.3s ease-in-out;"
+    bindtap="onCatchJumpBtn"
+  >
+    再抽一次
+  </view>
+</view>
+
+<view wx:else class="terminal-page">
+  <view class="terminal-text">点也没用</view>
+  <view class="terminal-sub">你必须吃这个！</view>
+  <button class="btn-terminal" bindtap="onAccept">我 吃 ！</button>
+</view>
